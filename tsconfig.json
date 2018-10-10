@@ -10,11 +10,16 @@
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "src/@types/index.d.ts"
     ],
     "lib": [
       "es2017",
       "dom"
-    ]
-  }
+    ],
+
+  },
+  "exclude": [
+    "node_modules"
+  ]      
 }
