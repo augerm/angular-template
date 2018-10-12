@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UtilService } from '../../services/util.service';
-import { AwsService } from '../../services/aws.service';
+import { TeamDataService } from '../../services/team-data.service';
+import { Team } from '../../models/team';
 
 @Component({
   selector: 'app-home',
@@ -9,21 +11,18 @@ import { AwsService } from '../../services/aws.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private aws: AwsService, private util: UtilService) { }
+  constructor(private router: Router, private util: UtilService, private teamData: TeamDataService) { }
+  sideOptions: Array<string> = ["Left", "Right"];
+  chosenSide: string;
+  gameId: string;
+  locationId: string;
 
   ngOnInit() {
-  	const CHUNK_DURATION = 10000;
 
-		const constraints = { audio: false, video: true };
-		navigator.mediaDevices.getUserMedia(constraints)
-			.then((stream) => {
-				const mediaRecorder = new MediaRecorder(stream);
-				console.log(mediaRecorder.mimeType);
-				mediaRecorder.ondataavailable = (blob) => {
-					// this.aws.addFile(blob.data);
-				}
-				mediaRecorder.start(CHUNK_DURATION);
-			})
   }
 
+  continue() {
+  	this.teamData.setGameData(this.locationId, this.gameId, this.chosenSide);
+  	this.router.navigate(['add-team-view']);
+  }
 }
