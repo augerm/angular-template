@@ -1,3 +1,12 @@
-<p>
-  upload-video-view works!
-</p>
+<div>
+    <label for="avatar">Upload Video:</label>
+    <br>
+    <br>
+    <input type="file"
+           id="avatar" name="avatar"
+           accept="video/*"
+           (change)="getFile($event)"/>
+     <br>
+     <br>
+     <button mat-raised-button (click)="submit()"> Submit </button>
+</div>

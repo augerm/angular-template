@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UtilService } from '../services/util.service';
+import { TeamDataService } from '../services/team-data.service';
+import { FILE_EXTENSIONS } from '../constants/file-extensions';
 import * as AWS from 'aws-sdk';
 
 
@@ -12,7 +14,7 @@ export class AwsService {
 	IdentityPoolId: string;
 	s3: AWS.S3;
 	
-  constructor(private util: UtilService) { 
+  constructor(private util: UtilService, private teamData: TeamDataService) { 
 		this.uploadBucketName = 'stat-tracker-uploads';
 		this.bucketRegion = 'us-east-1';
 		this.IdentityPoolId = 'us-east-1:e0d42120-a252-4d27-9675-ede0c5bff54e';
@@ -32,29 +34,32 @@ export class AwsService {
   }
 
 	upload(file, objectKey) {
-		console.log(`uploading file`);
-	  this.s3.upload({
-	    Key: objectKey,
-	    Body: file,
-	    ACL: 'public-read',
-	    Bucket: this.uploadBucketName
-	  }, function(err, data) {
-	    if (err) {
-	    	if(err.retryable) {
-	    		this.upload(file, objectKey);
-	    		return;
-	    	}
-	      return alert('There was an error uploading your video: ' + err.message);
-	    }
-	    alert('Successfully uploaded video.');
-	  });
+		const promise = new Promise((resolve, reject) => {
+			console.log(`uploading file`);
+		  this.s3.upload({
+		    Key: objectKey,
+		    Body: file,
+		    ACL: 'public-read',
+		    Bucket: this.uploadBucketName
+		  }, function(err, data) {
+		    if (err) {
+		    	if(err.retryable) {
+		    		return this.upload(file, objectKey);
+		    	}
+		      reject(err.message);
+		    }
+		    resolve(data);
+		  });
+		});
+		return promise;
 	}
 
 	addFile(file) {
 	  const date = new Date().toLocaleDateString().replace(/\//g, '-');
-	  const folderName = date + `-${this.util.guid()}`;
-	  const objectKey = `testing-stream/${folderName}.webm`;
+	  const folderName = `${date}/${this.teamData.locationId}/${this.teamData.gameId}/${this.teamData.side}`;
+	  const fileExtension = FILE_EXTENSIONS[file.type];
+	  const objectKey = `${folderName}.${fileExtension}`;
 	  console.log(`Adding file: ${objectKey}`);
-	  this.upload(file, objectKey);
+	  return this.upload(file, objectKey);
 	}
 }
