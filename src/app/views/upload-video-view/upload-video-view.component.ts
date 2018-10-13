@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AwsService } from '../../services/aws.service';
+import { ProxyService } from '../../services/proxy.service';
+import { TeamDataService } from '../../services/team-data.service';
+import { VideoMetaData } from '../../models/video-meta-data';
 
 @Component({
   selector: 'app-upload-video-view',
@@ -9,7 +12,7 @@ import { AwsService } from '../../services/aws.service';
 export class UploadVideoViewComponent implements OnInit {
 	videoFile: any;
 
-  constructor(private aws: AwsService) { }
+  constructor(private aws: AwsService, private proxy: ProxyService, private teamData: TeamDataService) { }
 
   ngOnInit() {
   }
@@ -20,7 +23,10 @@ export class UploadVideoViewComponent implements OnInit {
 
   async submit() {
   	try {
-  		await this.aws.addFile(this.videoFile);
+  		const s3PutResponse = await this.aws.addFile(this.videoFile);
+      const teamData = this.teamData.getTeamData();
+      const videoMetaData = new VideoMetaData(s3PutResponse, teamData);
+      await this.proxy.processVideo(videoMetaData);
   		alert("Successfully uploaded video file");
   	} catch(err) {
   		alert("Error uploading video file");

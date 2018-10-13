@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UtilService } from '../services/util.service';
 import { TeamDataService } from '../services/team-data.service';
+import { IS3PutResponse } from '../interfaces/is3-put-response';
 import { FILE_EXTENSIONS } from '../constants/file-extensions';
 import * as AWS from 'aws-sdk';
 
@@ -33,7 +34,7 @@ export class AwsService {
 
   }
 
-	upload(file, objectKey) {
+	upload(file, objectKey): Promise<IS3PutResponse> {
 		const promise = new Promise((resolve, reject) => {
 			console.log(`uploading file`);
 		  this.s3.upload({

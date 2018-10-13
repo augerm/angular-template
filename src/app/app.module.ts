@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -117,6 +119,7 @@ export class MaterialModule {}
   	),
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FormsModule,
     MaterialModule
   ],
