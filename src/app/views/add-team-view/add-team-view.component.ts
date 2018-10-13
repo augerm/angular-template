@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UtilService } from '../../services/util.service';
-import { TeamDataService } from '../../services/team-data.service';
+import { DataService } from '../../services/data-service';
 import { Team } from '../../models/team';
 
 
@@ -14,20 +14,20 @@ export class AddTeamViewComponent implements OnInit {
 
   curTeam: number = 1;
 
-  constructor(private router: Router, private util: UtilService, private teamData: TeamDataService) { }
+  constructor(private router: Router, private util: UtilService, private data: DataService) { }
 
   ngOnInit() {
 
   }
 
   onTeamCreated(team) {
-  	if(this.teamData.getNumTeams() === 0) {
+  	if(this.data.getNumTeams() === 0) {
   		this.curTeam++;
-  		this.teamData.addTeam(team);
+  		this.data.addTeam(team);
   		return;
   	}
 
-  	this.teamData.addTeam(team);
+  	this.data.addTeam(team);
   	this.router.navigate(['/select-video-type']);
   }
 

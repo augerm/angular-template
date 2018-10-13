@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Team } from '../models/team';
-import { ITeamData } from '../interfaces/iteam-data';
+import { IData } from '../interfaces/idata';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TeamDataService {
+export class DataService {
   locationId: string;
   gameId: string;
   side: string;
@@ -22,7 +22,7 @@ export class TeamDataService {
     this.side = side;
   }
 
-  getTeamData(): ITeamData {
+  getData(): IData {
     return {
       locationId: this.locationId,
       gameId: this.gameId,
