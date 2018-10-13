@@ -1,7 +1,7 @@
-const proxyServerBaseUrl = `localhost:8080`;
+const proxyServerBaseUrl = `http://localhost:8080/video-upload/`;
 
-export const ENDPOINTS = {
+export const END_POINTS = {
 	proxyServer: {
-		processVideo: `${proxyServerBaseUrl}/process-video`
+		processVideo: `${proxyServerBaseUrl}`
 	}
 }

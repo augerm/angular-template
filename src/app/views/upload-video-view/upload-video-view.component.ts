@@ -26,14 +26,12 @@ export class UploadVideoViewComponent implements OnInit {
   		const s3PutResponse = await this.aws.addFile(this.videoFile);
       const teamData = this.teamData.getTeamData();
       const videoMetaData = new VideoMetaData(s3PutResponse, teamData);
-      await this.proxy.processVideo(videoMetaData);
-  		alert("Successfully uploaded video file");
+      await this.proxy.processVideo(videoMetaData)
+        .subscribe((result) => {console.log(result)});
   	} catch(err) {
   		alert("Error uploading video file");
   		console.error(err);
   	}
-  	
-  	
   }
 
 }

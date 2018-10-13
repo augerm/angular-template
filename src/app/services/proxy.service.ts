@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ENDPOINTS } from '../constants/endpoints';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { END_POINTS } from '../constants/endpoints';
 import { VideoMetaData } from '../models/video-meta-data';
 
 import { Observable, throwError } from 'rxjs';
@@ -14,7 +14,12 @@ export class ProxyService {
   constructor(private http: HttpClient) { }
 
   processVideo(videoMetaData: VideoMetaData) {
-  	return this.http.post(ENDPOINTS.proxyServer.processVideo, videoMetaData, {})
+  	const httpOptions = {
+		  headers: new HttpHeaders({
+		    'Content-Type':  'application/json'
+		  })
+		};
+  	return this.http.post(END_POINTS.proxyServer.processVideo, videoMetaData, httpOptions)
 	    .pipe(
 	      catchError(this.handleError)
 	    );
