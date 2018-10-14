@@ -22,6 +22,7 @@ export class TeamInputComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'number', 'shirtColor', 'shortsColor'];
 	dataSource = new MatTableDataSource<Player>();
+  testArr: Array<string> = [];
 
   constructor(private util: UtilService) { }
 
