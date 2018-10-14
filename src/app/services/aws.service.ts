@@ -34,7 +34,7 @@ export class AwsService {
 
   }
 
-	upload(file, objectKey): Promise<IS3PutResponse> {
+	upload(file, objectKey): Promise<any> {
 		const promise = new Promise((resolve, reject) => {
 		  this.s3.upload({
 		    Key: objectKey,
